@@ -8,9 +8,10 @@ DEST="./models"
 mkdir -p "$DEST"
 
 usage() {
-  echo "Uso: $0 --9b | --35b"
-  echo "  --9b   Descarga Qwen3.5-9B  (Q4_K_M)"
-  echo "  --35b  Descarga Qwen3.5-35B-A3B (Q4_K_M)"
+  echo "Uso: $0 --9b | --35b | --122b"
+  echo "  --9b    Descarga Qwen3.5-9B  (Q4_K_M)"
+  echo "  --35b   Descarga Qwen3.5-35B-A3B (Q4_K_M)"
+  echo "  --122b  Descarga Qwen3.5-122B-A10B (Q3_K_M, ~56 GB)"
   exit 1
 }
 
@@ -27,13 +28,25 @@ case "$1" in
     REPO="unsloth/Qwen3.5-35B-A3B-GGUF"
     FILE="Qwen3.5-35B-A3B-Q3_K_M.gguf"
     ;;
+  --122b)
+    REPO="unsloth/Qwen3.5-122B-A10B-GGUF"
+    FILE="Q3_K_M"
+    SPLIT=true
+    ;;
   *)
     usage
     ;;
 esac
 
-echo "Descargando $FILE desde $REPO ..."
-hf download "$REPO" "$FILE" \
-  --local-dir "$DEST"
-
-echo "Modelo guardado en $DEST/$FILE"
+if [ "${SPLIT:-false}" = true ]; then
+  echo "Descargando directorio $FILE desde $REPO (~56 GB, 3 archivos) ..."
+  hf download "$REPO" \
+    --include "$FILE/*" \
+    --local-dir "$DEST"
+  echo "Modelo guardado en $DEST/$FILE/"
+else
+  echo "Descargando $FILE desde $REPO ..."
+  hf download "$REPO" "$FILE" \
+    --local-dir "$DEST"
+  echo "Modelo guardado en $DEST/$FILE"
+fi

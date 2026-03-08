@@ -16,9 +16,10 @@ if [ ! -f "$LLAMA_SERVER" ]; then
 fi
 
 usage() {
-  echo "Uso: $0 --9b | --35b"
-  echo "  --9b   Inicia con Qwen3.5-9B  (todas las capas en GPU)"
-  echo "  --35b  Inicia con Qwen3.5-35B-A3B (expertos offload a RAM)"
+  echo "Uso: $0 --9b | --35b | --122b"
+  echo "  --9b    Inicia con Qwen3.5-9B  (todas las capas en GPU)"
+  echo "  --35b   Inicia con Qwen3.5-35B-A3B (expertos offload a RAM)"
+  echo "  --122b  Inicia con Qwen3.5-122B-A10B (expertos offload a RAM)"
   exit 1
 }
 
@@ -36,6 +37,13 @@ case "$1" in
   --35b)
     MODEL="$SCRIPT_DIR/models/Qwen3.5-35B-A3B-Q3_K_M.gguf"
     CTX=225280
+    GPU_LAYERS=99
+    # Offload de todos los expertos MoE a RAM
+    EXTRA_ARGS=(-ot "\.ffn_.*_exps\.weight=CPU")
+    ;;
+  --122b)
+    MODEL="$SCRIPT_DIR/models/Q3_K_M/Qwen3.5-122B-A10B-Q3_K_M-00001-of-00003.gguf"
+    CTX=32768
     GPU_LAYERS=99
     # Offload de todos los expertos MoE a RAM
     EXTRA_ARGS=(-ot "\.ffn_.*_exps\.weight=CPU")
