@@ -58,4 +58,6 @@ echo "Modelo: $(basename "$MODEL")"
   --port "$PORT" \
   --ctx-size "$CTX" \
   --n-gpu-layers "$GPU_LAYERS" \
+  --jinja \
+  --reasoning-format deepseek \
   "${EXTRA_ARGS[@]}"
