@@ -17,4 +17,4 @@ case "$1" in
   *)     usage ;;
 esac
 
-ANTHROPIC_BASE_URL=http://localhost:8080 ANTHROPIC_API_KEY=sk-no-key-required claude --model "$MODEL"
+ANTHROPIC_BASE_URL=http://localhost:8080 ANTHROPIC_API_KEY=sk-no-key-required claude --model "$MODEL" --allow-dangerously-skip-permissions
