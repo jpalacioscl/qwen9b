@@ -3,11 +3,8 @@ set -euo pipefail
 
 # ── Configuracion ──────────────────────────────────────────────
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-MODEL="$SCRIPT_DIR/models/Qwen3.5-9B-Q4_K_M.gguf"
 HOST="0.0.0.0"
 PORT="8080"
-CTX=32768
-GPU_LAYERS=99   # poner 0 si no tienes GPU
 # ───────────────────────────────────────────────────────────────
 
 LLAMA_SERVER="$SCRIPT_DIR/llama.cpp/build/bin/llama-server"
@@ -17,10 +14,48 @@ if [ ! -f "$LLAMA_SERVER" ]; then
   exit 1
 fi
 
+usage() {
+  echo "Uso: $0 --9b | --35b"
+  echo "  --9b   Inicia con Qwen3.5-9B  (todas las capas en GPU)"
+  echo "  --35b  Inicia con Qwen3.5-35B-A3B (expertos offload a RAM)"
+  exit 1
+}
+
+if [ $# -eq 0 ]; then
+  usage
+fi
+
+case "$1" in
+  --9b)
+    MODEL="$SCRIPT_DIR/models/Qwen3.5-9B-Q4_K_M.gguf"
+    CTX=32768
+    GPU_LAYERS=99
+    EXTRA_ARGS=()
+    ;;
+  --35b)
+    MODEL="$SCRIPT_DIR/models/Qwen3.5-35B-A3B-Q4_K_M.gguf"
+    CTX=16384
+    GPU_LAYERS=99
+    # Offload de expertos MoE a RAM para caber en 8 GB VRAM
+    EXTRA_ARGS=(-ot "\.ffn_.*_exps\.weight=CPU")
+    ;;
+  *)
+    usage
+    ;;
+esac
+
+if [ ! -f "$MODEL" ]; then
+  echo "Error: modelo no encontrado en $MODEL"
+  echo "Ejecuta ./download.sh $1 primero."
+  exit 1
+fi
+
 echo "Levantando servidor en http://$HOST:$PORT ..."
+echo "Modelo: $(basename "$MODEL")"
 "$LLAMA_SERVER" \
   --model "$MODEL" \
   --host "$HOST" \
   --port "$PORT" \
   --ctx-size "$CTX" \
-  --n-gpu-layers "$GPU_LAYERS"
+  --n-gpu-layers "$GPU_LAYERS" \
+  "${EXTRA_ARGS[@]}"
