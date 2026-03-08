@@ -25,7 +25,7 @@ case "$1" in
     ;;
   --35b)
     REPO="unsloth/Qwen3.5-35B-A3B-GGUF"
-    FILE="Qwen3.5-35B-A3B-Q4_K_M.gguf"
+    FILE="Qwen3.5-35B-A3B-Q3_K_M.gguf"
     ;;
   *)
     usage
