@@ -36,9 +36,8 @@ case "$1" in
     MODEL="$SCRIPT_DIR/models/Qwen3.5-35B-A3B-Q3_K_M.gguf"
     CTX=131072
     GPU_LAYERS=99
-    # Capas 0-14: expertos en GPU, capas 15-39: expertos en CPU
-    # Ajustar el corte si VRAM no alcanza (bajar) o sobra (subir)
-    EXTRA_ARGS=(-ot "blk\.([0-9]|1[0-4])\.=CUDA0,exps=CPU")
+    # Offload de todos los expertos MoE a RAM
+    EXTRA_ARGS=(-ot "\.ffn_.*_exps\.weight=CPU")
     ;;
   *)
     usage
