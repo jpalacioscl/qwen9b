@@ -34,7 +34,7 @@ case "$1" in
     ;;
   --35b)
     MODEL="$SCRIPT_DIR/models/Qwen3.5-35B-A3B-Q3_K_M.gguf"
-    CTX=184320
+    CTX=204800
     GPU_LAYERS=99
     # Offload de todos los expertos MoE a RAM
     EXTRA_ARGS=(-ot "\.ffn_.*_exps\.weight=CPU")
