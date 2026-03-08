@@ -8,6 +8,7 @@ PORT="8080"
 # ───────────────────────────────────────────────────────────────
 
 LLAMA_SERVER="$SCRIPT_DIR/llama.cpp/build/bin/llama-server"
+export LD_LIBRARY_PATH="$SCRIPT_DIR/llama.cpp/build/bin:${LD_LIBRARY_PATH:-}"
 
 if [ ! -f "$LLAMA_SERVER" ]; then
   echo "Error: llama-server no encontrado. Ejecuta ./setup.sh primero."
