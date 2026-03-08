@@ -1,0 +1,37 @@
+# Entorno virtual Python
+.venv/
+venv/
+ENV/
+env/
+
+# Modelos de LLM
+models/*
+!models/.gitkeep
+
+# llama.cpp build artifacts
+llama.cpp/build/
+llama.cpp/*.o
+llama.cpp/*.so
+llama.cpp/*.a
+llama.cpp/libs/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+*.egg
+
+# Logs
+*.log
+logs/
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Test
+test/__pycache__/
