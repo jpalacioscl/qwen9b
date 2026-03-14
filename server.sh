@@ -51,7 +51,7 @@ case "$1" in
     ;;
   --omni)
     MODEL="$SCRIPT_DIR/models/omnicoder-9b-q3_k_l.gguf"
-    CTX=76800
+    CTX=94208
     GPU_LAYERS=99
     EXTRA_ARGS=()
     ;;
