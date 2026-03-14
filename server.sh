@@ -50,7 +50,7 @@ case "$1" in
     EXTRA_ARGS=(-ot "\.ffn_.*_exps\.weight=CPU")
     ;;
   --omni)
-    MODEL="$SCRIPT_DIR/models/omnicoder-9b-q4_k_m.gguf"
+    MODEL="$SCRIPT_DIR/models/omnicoder-9b-q3_k_l.gguf"
     CTX=65536
     GPU_LAYERS=99
     EXTRA_ARGS=()
