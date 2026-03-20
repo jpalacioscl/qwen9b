@@ -16,8 +16,9 @@ if [ ! -f "$LLAMA_SERVER" ]; then
 fi
 
 usage() {
-  echo "Uso: $0 --9b | --35b | --122b | --omni"
+  echo "Uso: $0 --9b | --27b | --35b | --122b | --omni"
   echo "  --9b    Inicia con Qwen3.5-9B  (todas las capas en GPU)"
+  echo "  --27b   Inicia con Qwen3.5-27B (todas las capas en GPU)"
   echo "  --35b   Inicia con Qwen3.5-35B-A3B (expertos offload a RAM)"
   echo "  --122b  Inicia con Qwen3.5-122B-A10B (expertos offload a RAM)"
   echo "  --omni  Inicia con OmniCoder-9B (todas las capas en GPU)"
@@ -31,6 +32,12 @@ fi
 case "$1" in
   --9b)
     MODEL="$SCRIPT_DIR/models/Qwen3.5-9B-Q4_K_M.gguf"
+    CTX=32768
+    GPU_LAYERS=99
+    EXTRA_ARGS=()
+    ;;
+  --27b)
+    MODEL="$SCRIPT_DIR/models/Qwen3.5-27B-Q4_K_M.gguf"
     CTX=32768
     GPU_LAYERS=99
     EXTRA_ARGS=()
