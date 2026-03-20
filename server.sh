@@ -38,8 +38,8 @@ case "$1" in
     ;;
   --27b)
     MODEL="$SCRIPT_DIR/models/Qwen3.5-27B-Q4_K_M.gguf"
-    CTX=71680
-    GPU_LAYERS=99
+    CTX=16384
+    GPU_LAYERS=22
     EXTRA_ARGS=()
     ;;
   --35b)
